@@ -8,9 +8,9 @@ from scrapy.utils.response import open_in_browser
 class CheckinSpider(scrapy.Spider):
     name = "checkin"
 
-    checkin_url = 'https://qa-oa.ekbana.info/checkIncheck'
-    checkout_url = 'https://qa-oa.ekbana.info/checkOutcheck'
-    redirect_url = 'https://qa-oa.ekbana.info/dashboard'
+    checkin_url = 'https://oa.ekbana.info/checkIncheck'
+    checkout_url = 'https://oa.ekbana.info/checkOutcheck'
+    redirect_url = 'https://oa.ekbana.info/dashboard'
     checkin_checkout_type = ''
     handle_httpstatus_list = [301, 302]
     username = ''
@@ -24,7 +24,7 @@ class CheckinSpider(scrapy.Spider):
             self.password = password
             print(checktype)
             self.start_urls = [
-                'https://qa-oa.ekbana.info/login',
+                'https://oa.ekbana.info/login',
             ]
         else:
             print('Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris')
