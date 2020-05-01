@@ -10,26 +10,31 @@ class CheckinSpider(scrapy.Spider):
 
     checkin_url = 'https://qa-oa.ekbana.info/checkIncheck'
     checkout_url = 'https://qa-oa.ekbana.info/checkOutcheck'
+    redirect_url = 'https://qa-oa.ekbana.info/dashboard'
     checkin_checkout_type = ''
     handle_httpstatus_list = [301, 302]
+    username = ''
+    password = ''
 
-    def __init__(self, checktype=None, *args, **kwargs):
+    def __init__(self, checktype=None, username=None, password=None, *args, **kwargs):
         super(CheckinSpider, self).__init__(*args, **kwargs)
-        if checktype is None:
-            print 'Please provide type like checkin or checkout by -a checktype=checkin'
-        else:
+        if checktype is not None and username is not None and password is not None:
             self.checkin_checkout_type = checktype
+            self.username = username
+            self.password = password
             print checktype
             self.start_urls = [
                 'https://qa-oa.ekbana.info/login',
             ]
+        else:
+            print 'Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris'
 
     def parse(self, response):
         token = response.xpath('//*[@name="_token"]/@value').extract_first()
         return scrapy.FormRequest.from_response(response, 
                                      formdata={'csrf_token': token,
-                                                'password': 'bemita123',
-                                                'username': 'bemitaji'}, 
+                                                'password': self.password,
+                                                'username': self.username}, 
                                      callback=self.after_login)
                                 
 
@@ -43,6 +48,12 @@ class CheckinSpider(scrapy.Spider):
         #     meta={"csrf-token": token, 'X-CSRF-TOKEN': token},
         #     cookies={'XSRF-TOKEN': cookie},
         # )
+        # print response.url
+
+        if response.url != self.redirect_url:
+            print 'Invalid username password'
+            return
+
         if self.checkin_checkout_type == 'checkin':
             return scrapy.Request(
                 url=self.checkin_url,
