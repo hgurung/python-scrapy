@@ -1,6 +1,6 @@
 <?php 
 
-$usersJson = file_get_contents("users.json");
+$usersJson = file_get_contents("http://159.89.164.25/oa-checkin/users.json");
 $userData = json_decode($usersJson, true);
 foreach($userData as $user) {
     echo "<pre>";
