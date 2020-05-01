@@ -3,3 +3,6 @@ scrapy.log
 /logs/
 
 logs/
+
+checkin.log
+checkout.log
