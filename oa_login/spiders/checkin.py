@@ -22,12 +22,12 @@ class CheckinSpider(scrapy.Spider):
             self.checkin_checkout_type = checktype
             self.username = username
             self.password = password
-            self.log checktype
+            print(checktype)
             self.start_urls = [
                 'https://qa-oa.ekbana.info/login',
             ]
         else:
-            self.log 'Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris'
+            print('Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris')
 
     def parse(self, response):
         token = response.xpath('//*[@name="_token"]/@value').extract_first()
@@ -53,7 +53,7 @@ class CheckinSpider(scrapy.Spider):
         # print response.url
 
         if response.url != self.redirect_url:
-            self.log 'Invalid username password'
+            print('Invalid username password')
             return
 
         if self.checkin_checkout_type == 'checkin':
@@ -70,11 +70,11 @@ class CheckinSpider(scrapy.Spider):
             )
     
     def checkin(self, response):
-        self.log 'If it is not redirected then check in successfull'
+        print('If it is not redirected then check in successfull')
         open_in_browser(response)
 
     def checkout(self, response):
-        self.log 'If it is not redirected then check out successfull'
+        print('If it is not redirected then check out successfull')
         open_in_browser(response)
 
 
