@@ -8,7 +8,7 @@ foreach($userData as $user) {
     $password = $user['password'];
     // $url = $topic['question_url'];
     if (!empty($username) && !empty($password)) {
-        $command = "scrapy crawl checkin -s LOG_FILE=checkin.log -a checktype=checkin -a username=".$username." -a password=".$password."";
+        $command = "scrapy crawl checkin -s LOG_FILE=logs/checkin.log -a checktype=checkin -a username=".$username." -a password=".$password."";
         echo "<pre>";
         echo $command;
         echo "<pre>";
