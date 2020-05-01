@@ -39,6 +39,8 @@ class CheckinSpider(scrapy.Spider):
                                 
 
     def after_login(self, response):
+        open_in_browser(response)
+
         # token = response.xpath("//meta[@name='csrf-token']/@content").extract_first()
         # cookie = response.headers.getlist('Set-Cookie')[0].split(';')[0].split("=")[1]
         # # open_in_browser(response)
@@ -51,7 +53,7 @@ class CheckinSpider(scrapy.Spider):
         # print response.url
 
         if response.url != self.redirect_url:
-            print 'Invalid username password'
+            self.log 'Invalid username password'
             return
 
         if self.checkin_checkout_type == 'checkin':
@@ -68,12 +70,12 @@ class CheckinSpider(scrapy.Spider):
             )
     
     def checkin(self, response):
-        print 'If it is not redirected then check in successfull'
-        # open_in_browser(response)
+        self.log 'If it is not redirected then check in successfull'
+        open_in_browser(response)
 
     def checkout(self, response):
-        print 'If it is not redirected then check out successfull'
-        # open_in_browser(response)
+        self.log 'If it is not redirected then check out successfull'
+        open_in_browser(response)
 
 
         
