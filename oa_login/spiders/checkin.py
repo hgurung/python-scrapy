@@ -22,12 +22,12 @@ class CheckinSpider(scrapy.Spider):
             self.checkin_checkout_type = checktype
             self.username = username
             self.password = password
-            print checktype
+            self.log checktype
             self.start_urls = [
                 'https://qa-oa.ekbana.info/login',
             ]
         else:
-            print 'Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris'
+            self.log 'Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris'
 
     def parse(self, response):
         token = response.xpath('//*[@name="_token"]/@value').extract_first()
