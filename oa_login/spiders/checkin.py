@@ -1,6 +1,7 @@
 import scrapy
 
 import re 
+import time
 
 from scrapy.http import FormRequest
 from scrapy.utils.response import open_in_browser
@@ -27,19 +28,24 @@ class CheckinSpider(scrapy.Spider):
                 'https://oa.ekbana.info/login',
             ]
         else:
-            print('Please provide valid attributes like -a checktype=checkin -a username=harris -a password=harris')
+            print('Please provide valid attributes like -a checktype=checkin -a username=username -a password=password')
 
     def parse(self, response):
+        time.sleep(5)
+        open_in_browser(response)
         token = response.xpath('//*[@name="_token"]/@value').extract_first()
+        # captcha = response.xpath('//*[@name="recaptcha_response"]/@value').extract_first()
         return scrapy.FormRequest.from_response(response, 
                                      formdata={'csrf_token': token,
                                                 'password': self.password,
-                                                'username': self.username}, 
+                                                'username': self.username,
+                                                # 'recaptcha_response': captcha
+                                            }, 
                                      callback=self.after_login)
                                 
 
     def after_login(self, response):
-        open_in_browser(response)
+        # open_in_browser(response)
 
         # token = response.xpath("//meta[@name='csrf-token']/@content").extract_first()
         # cookie = response.headers.getlist('Set-Cookie')[0].split(';')[0].split("=")[1]
@@ -52,9 +58,12 @@ class CheckinSpider(scrapy.Spider):
         # )
         # print response.url
 
-        if response.url != self.redirect_url:
-            print('Invalid username password')
-            return
+        # if response.url != self.redirect_url:
+        #     captcha = response.xpath('//*[@name="recaptcha_response"]/@value').extract_first()
+        #     print(captcha)
+            # return self.parse(self, response)
+            # print('Invalid username password')
+            # return
 
         if self.checkin_checkout_type == 'checkin':
             return scrapy.Request(
